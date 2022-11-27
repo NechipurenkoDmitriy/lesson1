@@ -22,12 +22,6 @@ async function addNote(title){
      return Array.isArray(JSON.parse(notes)) ? JSON.parse(notes) : []
  }
 
- async function removeNote(id){
-    const notes = await getNotes()
-    const filtredNotes = notes.filter()
-
- }
-
  async function printNotes () {
      const notes = await getNotes()
 
@@ -37,6 +31,18 @@ async function addNote(title){
      })
  }
 
+ async function removeNote(id){
+    const idString = id.toString()
+    const notes = await getNotes()
+    if (notes.find(n=>n.id===idString) === undefined) {
+        console.log(chalk.red.inverse('id not found'))
+        return
+    }   
+    const filtredNotes = notes.filter((n)=>n.id!==idString)
+    await fs.writeFile(notesPath, JSON.stringify(filtredNotes))
+    console.log(chalk.red.inverse('Note was removed'))
+ }
+
  module.exports={
-    addNote, printNotes
+    addNote, printNotes, removeNote
  }
