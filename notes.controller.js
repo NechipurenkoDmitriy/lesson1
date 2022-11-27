@@ -22,12 +22,18 @@ async function addNote(title){
      return Array.isArray(JSON.parse(notes)) ? JSON.parse(notes) : []
  }
 
+ async function removeNote(id){
+    const notes = await getNotes()
+    const filtredNotes = notes.filter()
+
+ }
+
  async function printNotes () {
      const notes = await getNotes()
 
      console.log(chalk.bgBlue('The list of notes:'))
      notes.forEach(note=>{
-         console.log(chalk.blue(note.title))
+         console.log(chalk.blue(note.id,note.title))
      })
  }
 
