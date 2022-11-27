@@ -27,4 +27,13 @@ yargs.command({
     }
 })
 
+yargs.command({
+    command: 'remove',
+    describe:'Remove note by id',
+    async handler({id}) {
+        // const notes = await printNotes()
+        console.log(id)
+    }
+})
+
 yargs.parse()
