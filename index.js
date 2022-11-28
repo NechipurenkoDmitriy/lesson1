@@ -23,12 +23,8 @@ app.get('/', async (req, res) => {
     })
 })
 
-app.post('/:id?/:newTitle?', async (req, res) => {
-    if (req.params.id){
-        await editNote(req.params.id, req.params.newTitle)
-    } else {
-        await addNote(req.body.title)
-    }
+app.post('/', async (req, res) => {
+    await addNote(req.body.title)
 
     res.render('index', {
         title: 'Express App',
@@ -37,8 +33,19 @@ app.post('/:id?/:newTitle?', async (req, res) => {
     })
 })
 
+app.put('/:id?/:newTitle?', async (req, res) => {
+    await editNote(req.params.id, req.params.newTitle)
+
+    res.render('index', {
+        title: 'Express App',
+        notes: await getNotes(),
+        created: false
+    })
+})
+
 app.delete('/:id', async (req, res) => {
     await removeNote(req.params.id)
+
     res.render('index', {
         title: 'Express App',
         notes: await getNotes(),
