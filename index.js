@@ -1,11 +1,9 @@
 const express = require('express')
 const chalk = require('chalk')
 const path = require('path')
-const {addNote, getNotes, removeNote} = require('./notes.controller')
+const {addNote, getNotes, removeNote, editNote} = require('./notes.controller')
 
 const port = 3000
-
-
 const app = express()
 
 app.set('view engine', 'ejs')
@@ -15,8 +13,9 @@ app.use(express.static(path.resolve(__dirname, 'public')))
 app.use(express.urlencoded({
     extended: true
 }))
+app.use(express.json())
 
-app.get('/', async (req, res)=>{
+app.get('/', async (req, res) => {
     res.render('index', {
         title: 'Express App',
         notes: await getNotes(),
@@ -24,8 +23,13 @@ app.get('/', async (req, res)=>{
     })
 })
 
-app.post('/:id', async (req, res)=>{
-    await addNote(req.body.title)
+app.post('/:id?/:newTitle?', async (req, res) => {
+    if (req.params.id){
+        await editNote(req.params.id, req.params.newTitle)
+    } else {
+        await addNote(req.body.title)
+    }
+
     res.render('index', {
         title: 'Express App',
         notes: await getNotes(),
@@ -42,6 +46,6 @@ app.delete('/:id', async (req, res) => {
     })
 })
 
-app.listen(port, ()=>{
+app.listen(port, () => {
     console.log(chalk.green(`Server has been started on port ${port}...`))
 })
