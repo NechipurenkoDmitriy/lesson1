@@ -12,7 +12,9 @@ document.addEventListener('click', event => {
 
         edit(id).then(()=>{
             console.log('edit ok')
-            document.getElementById(`t_${id}`).textContent = localStorage.getItem('tempNewTitle')
+           if(localStorage.getItem('tempNewTitle')) {
+               document.getElementById(`t_${id}`).textContent = localStorage.getItem('tempNewTitle')
+           }
             localStorage.clear('tempNewTitle')
         })
     }
@@ -26,6 +28,7 @@ async function remove(id) {
 
 async function edit(id) {
     const newTitle = prompt('Введите новое название:')
+    console.log('newTitle',newTitle)
     if (newTitle) {
         await fetch(`/${id}/${newTitle}`, {method: `PUT`})
         localStorage.setItem('tempNewTitle', newTitle)
